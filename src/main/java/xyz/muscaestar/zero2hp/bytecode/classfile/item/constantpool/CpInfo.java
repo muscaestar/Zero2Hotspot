@@ -27,7 +27,7 @@ public class CpInfo extends ClassItem {
         this.tag = tag;
     }
 
-    protected void info(byte[] info) {
+    protected void loadInfo(byte[] info) {
         super.setMry(info);
     }
 

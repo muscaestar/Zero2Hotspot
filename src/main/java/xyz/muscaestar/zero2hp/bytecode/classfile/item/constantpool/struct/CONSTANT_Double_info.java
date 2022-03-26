@@ -24,8 +24,8 @@ public class CONSTANT_Double_info extends CpInfo {
     }
 
     @Override
-    public void info(byte[] info) {
-        super.info(info);
+    public void loadInfo(byte[] info) {
+        super.loadInfo(info);
         this.high_bytes = ByteUtil.fromU4(info[0], info[1], info[2], info[3]);
         this.low_bytes = ByteUtil.fromU4(info[4], info[5], info[6], info[7]);
     }

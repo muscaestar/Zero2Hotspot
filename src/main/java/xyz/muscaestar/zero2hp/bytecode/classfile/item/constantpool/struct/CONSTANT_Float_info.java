@@ -20,8 +20,8 @@ public class CONSTANT_Float_info extends CpInfo {
     }
 
     @Override
-    public void info(byte[] info) {
-        super.info(info);
+    public void loadInfo(byte[] info) {
+        super.loadInfo(info);
         this.bytes = ByteUtil.fromU4(info[0], info[1], info[2], info[3]);
     }
 
