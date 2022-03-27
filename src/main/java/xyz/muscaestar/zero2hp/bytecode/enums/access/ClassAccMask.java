@@ -10,7 +10,7 @@ import static xyz.muscaestar.zero2hp.utils.LogUtil.Log;
  *
  * @author muscaestar
  */
-public enum AccMask {
+public enum ClassAccMask {
     ACC_PUBLIC((short) 0x0001),     // 0b0000_0000_0000_0001
     ACC_FINAL((short) 0x0010),      // 0b0000_0000_0001_0000
     ACC_SUPER((short) 0x0020),      // 0b0000_0000_0010_0000
@@ -23,12 +23,12 @@ public enum AccMask {
 
     private final short val;
 
-    AccMask(short v) {
+    ClassAccMask(short v) {
         this.val = v;
     }
 
-    public static AccMask[] resolve(short accFlags) {
-        Set<AccMask> set = new HashSet<>();
+    public static ClassAccMask[] resolve(short accFlags) {
+        Set<ClassAccMask> set = new HashSet<>();
         final boolean isPublic = (accFlags & ACC_PUBLIC.val) == ACC_PUBLIC.val;
         final boolean isFinal = (accFlags & ACC_FINAL.val) == ACC_FINAL.val;
         final boolean isSuper = (accFlags & ACC_SUPER.val) == ACC_SUPER.val;
@@ -67,7 +67,7 @@ public enum AccMask {
         if (isSynth) set.add(ACC_SYNTHETIC);
         if (isEnum) set.add(ACC_ENUM);
 
-        return set.toArray(new AccMask[0]);
+        return set.toArray(new ClassAccMask[0]);
     }
 
     public short val() {
