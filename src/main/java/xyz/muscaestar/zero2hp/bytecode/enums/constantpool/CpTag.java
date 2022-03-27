@@ -35,8 +35,8 @@ public enum CpTag {
         return mapping[b & 0xFF];
     }
 
-    private byte infoLen;
-    private byte val;
+    private final byte infoLen;
+    private final byte val;
 
     CpTag(int len, byte b) {
         this.infoLen = (byte) len;

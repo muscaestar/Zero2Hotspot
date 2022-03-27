@@ -24,7 +24,7 @@ public enum ItemType {
     attributes((byte) 0x0A), // 可变长度
     ;
 
-    private byte len; // 单位byte
+    private final byte len; // 单位byte
 
     ItemType(byte len) {
         this.len = len;

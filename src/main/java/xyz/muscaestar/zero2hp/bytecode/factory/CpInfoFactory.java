@@ -1,7 +1,5 @@
 package xyz.muscaestar.zero2hp.bytecode.factory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.struct.*;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
@@ -10,13 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static xyz.muscaestar.zero2hp.utils.LogUtil.Log;
+
 /**
  * Created by muscaestar on 3/25/22
  *
  * @author muscaestar
  */
 public class CpInfoFactory {
-    private static final Logger log = LoggerFactory.getLogger(CpInfoFactory.class);
 
     private static Map<CpTag, Function<byte[], CpInfo>> tagToFunc = new HashMap<>();
     static {
@@ -81,7 +80,7 @@ public class CpInfoFactory {
     public static CpInfo createCpInfo(CpTag tag, byte[] info) {
         final Function<byte[], CpInfo> func = tagToFunc.get(tag);
         if (func == null) {
-            log.error("此常量池结构尚无法解析：" + tag.name());
+            Log.error("此常量池结构尚无法解析：" + tag.name());
             System.exit(9);
         }
         return func.apply(info);

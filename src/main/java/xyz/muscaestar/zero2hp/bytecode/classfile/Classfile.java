@@ -113,4 +113,9 @@ public class Classfile {
         this.constant_pool_count.setMry(ByteUtil.toU2(cpCount));
         this.constant_pool = new ClassItem[cpCount];
     }
+
+    public void accFlags(short accFlags) {
+        this.access_flags = new ClassItem(ItemType.access_flags);
+        this.access_flags.setMry(ByteUtil.toU2(accFlags));
+    }
 }
