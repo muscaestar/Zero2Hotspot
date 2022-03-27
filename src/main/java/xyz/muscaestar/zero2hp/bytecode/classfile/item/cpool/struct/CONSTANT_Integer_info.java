@@ -1,6 +1,6 @@
-package xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.struct;
+package xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.struct;
 
-import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.CpInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
 import xyz.muscaestar.zero2hp.utils.ByteUtil;
 
@@ -9,14 +9,14 @@ import xyz.muscaestar.zero2hp.utils.ByteUtil;
  *
  * @author muscaestar
  */
-public class CONSTANT_Float_info extends CpInfo {
+public class CONSTANT_Integer_info extends CpInfo {
     /**
      * 大端序存储值
      */
     private int bytes; // u4
 
-    public CONSTANT_Float_info() {
-        super(CpTag.CONSTANT_Float);
+    public CONSTANT_Integer_info() {
+        super(CpTag.CONSTANT_Integer);
     }
 
     @Override

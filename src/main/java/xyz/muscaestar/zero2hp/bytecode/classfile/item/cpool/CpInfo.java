@@ -1,4 +1,4 @@
-package xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool;
+package xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.ClassItem;
 import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;

@@ -2,7 +2,7 @@ package xyz.muscaestar.zero2hp.bytecode.classfile;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.ClassItem;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.SimpleItem;
-import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.CpInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.field.FieldInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;
 

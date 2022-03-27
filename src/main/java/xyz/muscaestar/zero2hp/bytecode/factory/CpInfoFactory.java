@@ -1,7 +1,7 @@
 package xyz.muscaestar.zero2hp.bytecode.factory;
 
-import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.CpInfo;
-import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.struct.*;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.struct.*;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
 
 import java.util.HashMap;

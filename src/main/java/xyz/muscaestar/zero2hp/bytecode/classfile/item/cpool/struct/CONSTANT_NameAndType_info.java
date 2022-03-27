@@ -1,6 +1,6 @@
-package xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.struct;
+package xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.struct;
 
-import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.CpInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
 import xyz.muscaestar.zero2hp.utils.ByteUtil;
 

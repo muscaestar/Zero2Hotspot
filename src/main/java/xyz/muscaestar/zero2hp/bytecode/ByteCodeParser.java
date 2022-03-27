@@ -1,7 +1,7 @@
 package xyz.muscaestar.zero2hp.bytecode;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.Classfile;
-import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.CpInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.access.ClassAccMask;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
 import xyz.muscaestar.zero2hp.bytecode.factory.CpInfoFactory;
@@ -87,11 +87,11 @@ public class ByteCodeParser {
     }
 
     private int parseFields(int fieldsCount, final int startOffset) {
-//        Log.info("开始解析字段表");
-//        int offset = startOffset;
-//        for (int i = 0; i < fieldsCount; i++) {
-//
-//        }
+        Log.info("开始解析字段表");
+        int offset = startOffset;
+        for (int i = 0; i < fieldsCount; i++) {
+
+        }
         return -1;
     }
 
