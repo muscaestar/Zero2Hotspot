@@ -31,8 +31,8 @@ public class ByteUtil {
 
     public static byte[] toU2(short cpCount) {
         byte[] u2 =  new byte[2];
-        u2[1] = (byte) (cpCount & 0b1111);
-        u2[0] = (byte) (cpCount >>> 8 & 0b1111);
+        u2[1] = (byte) (cpCount & 0xFF);
+        u2[0] = (byte) (cpCount >>> 8 & 0xFF);
         return u2;
     }
 
@@ -47,9 +47,9 @@ public class ByteUtil {
     public static byte[] toU4(int uint) {
         byte[] u4 = new byte[4];
         u4[3] = (byte) (uint & 0b1111);
-        u4[2] = (byte) (uint >>> 8 & 0b1111);
-        u4[1] = (byte) (uint >>> 16 & 0b1111);
-        u4[0] = (byte) (uint >>> 24 & 0b1111);
+        u4[2] = (byte) (uint >>> 8 & 0xFF);
+        u4[1] = (byte) (uint >>> 16 & 0xFF);
+        u4[0] = (byte) (uint >>> 24 & 0xFF);
         return u4;
     }
 
