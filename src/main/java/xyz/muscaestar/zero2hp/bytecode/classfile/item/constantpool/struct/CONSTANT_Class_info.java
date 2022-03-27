@@ -26,6 +26,6 @@ public class CONSTANT_Class_info extends CpInfo {
 
     @Override
     public String meta() {
-        return "[2字节]name_index: #" + name_index;
+        return "[2字节]name_index: #" + (int) name_index;
     }
 }

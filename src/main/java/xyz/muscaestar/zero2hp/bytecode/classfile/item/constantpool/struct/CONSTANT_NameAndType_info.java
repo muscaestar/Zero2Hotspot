@@ -36,6 +36,6 @@ public class CONSTANT_NameAndType_info extends CpInfo {
 
     @Override
     public String meta() {
-        return "[2字节]name_index: #" + name_index + "; [2字节]descriptor_index: #" + descriptor_index;
+        return "[2字节]name_index: #" + (int) name_index + "; [2字节]descriptor_index: #" + (int) descriptor_index;
     }
 }

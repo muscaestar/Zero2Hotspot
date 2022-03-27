@@ -2,7 +2,8 @@ package xyz.muscaestar.zero2hp.bytecode.classfile;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.ClassItem;
 import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;
-import xyz.muscaestar.zero2hp.utils.ByteUtil;
+
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.toU2;
 
 /**
  * Created by muscaestar on 3/25/22
@@ -110,12 +111,27 @@ public class Classfile {
 
     public void cpCount(short cpCount) {
         this.constant_pool_count = new ClassItem(ItemType.constant_pool_count);
-        this.constant_pool_count.setMry(ByteUtil.toU2(cpCount));
+        this.constant_pool_count.setMry(toU2(cpCount));
         this.constant_pool = new ClassItem[cpCount];
     }
 
     public void accFlags(short accFlags) {
         this.access_flags = new ClassItem(ItemType.access_flags);
-        this.access_flags.setMry(ByteUtil.toU2(accFlags));
+        this.access_flags.setMry(toU2(accFlags));
+    }
+
+    public void thisClass(short thisClass) {
+        this.this_class = new ClassItem(ItemType.this_class);
+        this.this_class.setMry(toU2(thisClass));
+    }
+
+    public void superClass(short superClass) {
+        this.this_class = new ClassItem(ItemType.super_class);
+        this.this_class.setMry(toU2(superClass));
+    }
+
+    public void interfCount(short interfCount) {
+        this.interfaces_count = new ClassItem(ItemType.interfaces_count);
+        this.interfaces_count.setMry(toU2(interfCount));
     }
 }

@@ -44,12 +44,12 @@ public class ByteCodeParser {
         short majorVer = fromU2(bytecode[6], bytecode[7]);
         classfile.minorVer(Arrays.copyOfRange(bytecode, 4, 6));
         classfile.majorVer(Arrays.copyOfRange(bytecode, 6, 8));
-        Log.info("[2+2字节]版本号：{}.{}", majorVer, minorVer);
+        Log.info("[2+2字节]版本号：{}.{}", (int) majorVer, (int) minorVer);
 
         // 常量池: 计数器 + 常量池[]
         short cpCount = fromU2(bytecode[8], bytecode[9]);
         classfile.cpCount(cpCount);
-        Log.info("[2字节]常量池计数器：{}", cpCount);
+        Log.info("[2字节]常量池计数器：{}", (int) cpCount);
         final int offsetAcc = parseConstantPool(cpCount);
         Log.info("常量池解析结束坐标: {}", offsetAcc);
 
@@ -59,6 +59,21 @@ public class ByteCodeParser {
         final String flags = Arrays.stream(AccMask.resolve(accFlags)).map(Enum::name).collect(Collectors.joining(","));
         Log.info("[2字节]访问标志：{}", toHexB(toU2(accFlags)));
         Log.info("\t对应标志集合：{}", flags);
+
+        // 类索引
+        short thisClass = fromU2(bytecode[offsetAcc + 2], bytecode[offsetAcc + 3]);
+        classfile.thisClass(thisClass);
+        Log.info("[2字节]类索引：{}", toHexB(toU2(thisClass)));
+
+        // 父类索引
+        short superClass = fromU2(bytecode[offsetAcc + 4], bytecode[offsetAcc + 5]);
+        classfile.superClass(superClass);
+        Log.info("[2字节]父类索引：{}", toHexB(toU2(superClass)));
+
+        // 接口：计数器 + 接口表[]
+        short interfCount = fromU2(bytecode[offsetAcc + 6], bytecode[offsetAcc + 7]);
+        classfile.interfCount(interfCount);
+        Log.info("[2字节]接口计数器：{}", (int) interfCount);
     }
 
     private int parseConstantPool(short cpCount) {

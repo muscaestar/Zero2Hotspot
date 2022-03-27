@@ -37,6 +37,6 @@ public class CONSTANT_Fieldref_info extends CpInfo {
 
     @Override
     public String meta() {
-        return "[2字节]class_index: #" + class_index + "; [2字节]name_and_type_index: #" + name_and_type_index;
+        return "[2字节]class_index: #" + (int) class_index + "; [2字节]name_and_type_index: #" + (int) name_and_type_index;
     }
 }

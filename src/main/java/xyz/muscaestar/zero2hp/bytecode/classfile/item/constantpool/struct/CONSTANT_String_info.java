@@ -29,6 +29,6 @@ public class CONSTANT_String_info extends CpInfo {
 
     @Override
     public String meta() {
-        return "[2字节]string_index: #" + string_index;
+        return "[2字节]string_index: #" + (int) string_index;
     }
 }
