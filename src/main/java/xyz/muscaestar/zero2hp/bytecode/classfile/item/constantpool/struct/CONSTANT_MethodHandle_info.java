@@ -24,4 +24,14 @@ public class CONSTANT_MethodHandle_info extends CpInfo {
     public CONSTANT_MethodHandle_info() {
         super(CpTag.CONSTANT_MethodHandle);
     }
+
+    @Override
+    public void load(byte[] bytes) {
+
+    }
+
+    @Override
+    public String meta() {
+        return null;
+    }
 }

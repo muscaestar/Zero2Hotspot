@@ -9,13 +9,12 @@ import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
  *
  * @author muscaestar
  */
-public class CpInfo extends ClassItem {
+public abstract class CpInfo extends ClassItem {
     private byte tag; // u1 tag; from xyz.muscaestar.zero2hp.bytecode.enums.cachepool.CpTag
 
     protected CpInfo(CpTag tag) {
-        super(ItemType.constant_pool);
+        super.setType(ItemType.constant_pool);
         this.setTag(tag.val());
-        // 内存长度未确定
     }
 
     public byte getTag() {
@@ -26,11 +25,5 @@ public class CpInfo extends ClassItem {
         this.tag = tag;
     }
 
-    protected void loadInfo(byte[] info) {
-        super.setMry(info);
-    }
-
-    public String meta() {
-        return "";
-    }
+    public abstract String meta();
 }

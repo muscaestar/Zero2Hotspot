@@ -8,26 +8,8 @@ import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;
  *
  * @author muscaestar
  */
-public class ClassItem {
-    private ItemType type;
-    private byte[] mry;
-
-    // 给子类用
-    protected ClassItem() {}
-
-    public ClassItem(ItemType type) {
-        assert(type.len() < 0x0A);
-
-        this.type = type;
-        // 分配内存
-        mry = new byte[type.len()];
-    }
-
-    public ClassItem(ItemType type, int len) {
-        assert(len >= 0);
-        this.type = type;
-        this.mry = new byte[len];
-    }
+public abstract class ClassItem {
+    protected ItemType type;
 
     public ItemType getType() {
         return type;
@@ -37,11 +19,5 @@ public class ClassItem {
         this.type = type;
     }
 
-    public byte[] getMry() {
-        return mry;
-    }
-
-    public void setMry(byte[] mry) {
-        this.mry = mry;
-    }
+    public abstract void load(byte[] bytes);
 }

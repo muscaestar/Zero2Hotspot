@@ -24,8 +24,7 @@ public class CONSTANT_Utf8_info extends CpInfo {
     }
 
     @Override
-    public void loadInfo(byte[] info) {
-        super.loadInfo(info);
+    public void load(byte[] info) {
         this.length = ByteUtil.fromU2(info[0], info[1]);
         this.bytes = Arrays.copyOfRange(info, 2, info.length);
     }

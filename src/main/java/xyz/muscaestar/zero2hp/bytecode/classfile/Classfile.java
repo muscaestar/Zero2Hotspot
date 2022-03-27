@@ -1,7 +1,9 @@
 package xyz.muscaestar.zero2hp.bytecode.classfile;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.ClassItem;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.SimpleItem;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.CpInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.field.FieldInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;
 
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.toU2;
@@ -12,74 +14,72 @@ import static xyz.muscaestar.zero2hp.utils.ByteUtil.toU2;
  * @author muscaestar
  */
 public class Classfile {
-    private ClassItem magic; // 魔数
-    private ClassItem minor_version; // 副版本号
-    private ClassItem major_version; // 主版本号
-    private ClassItem constant_pool_count; // 常量池计数器
-    private ClassItem[] constant_pool; // 常量池
-    private ClassItem access_flags; // 访问标志
-    private ClassItem this_class; // 类索引
-    private ClassItem super_class; // 父类索引
-    private ClassItem interfaces_count; // 接口计数器
-    private ClassItem[] interfaces; // 接口表
-    private ClassItem fields_count; // 字段计数器
-    private ClassItem[] fields; // 字段表
-    private ClassItem methods_count; // 方法计数器
+    private SimpleItem magic; // 魔数
+    private SimpleItem minor_version; // 副版本号
+    private SimpleItem major_version; // 主版本号
+    private SimpleItem constant_pool_count; // 常量池计数器
+    private CpInfo[] constant_pool; // 常量池
+    private SimpleItem access_flags; // 访问标志
+    private SimpleItem this_class; // 类索引
+    private SimpleItem super_class; // 父类索引
+    private SimpleItem interfaces_count; // 接口计数器
+    private SimpleItem[] interfaces; // 接口表
+    private SimpleItem fields_count; // 字段计数器
+    private FieldInfo[] fields; // 字段表
+    private SimpleItem methods_count; // 方法计数器
     private ClassItem[] methods; // 方法表
-    private ClassItem attributes_count; // 属性计数器
+    private SimpleItem attributes_count; // 属性计数器
     private ClassItem[] attributes; // 属性表
 
-
-
-    public ClassItem getMagic() {
+    public SimpleItem getMagic() {
         return magic;
     }
 
-    public ClassItem getMinor_version() {
+    public SimpleItem getMinor_version() {
         return minor_version;
     }
 
-    public ClassItem getMajor_version() {
+    public SimpleItem getMajor_version() {
         return major_version;
     }
 
-    public ClassItem getConstant_pool_count() {
+    public SimpleItem getConstant_pool_count() {
         return constant_pool_count;
     }
 
-    public ClassItem[] getConstant_pool() {
+    public CpInfo[] getConstant_pool() {
         return constant_pool;
     }
 
-    public ClassItem getAccess_flags() {
+    public SimpleItem getAccess_flags() {
         return access_flags;
     }
 
-    public ClassItem getThis_class() {
+    public SimpleItem getThis_class() {
         return this_class;
     }
 
-    public ClassItem getSuper_class() {
+    public SimpleItem getSuper_class() {
         return super_class;
     }
 
-    public ClassItem getInterfaces_count() {
+    public SimpleItem getInterfaces_count() {
         return interfaces_count;
     }
 
-    public ClassItem[] getInterfaces() {
+    public SimpleItem[] getInterfaces() {
         return interfaces;
     }
 
-    public ClassItem getFields_count() {
+    public SimpleItem getFields_count() {
         return fields_count;
     }
 
-    public ClassItem[] getFields() {
+    public FieldInfo[] getFields() {
         return fields;
     }
 
-    public ClassItem getMethods_count() {
+    public SimpleItem getMethods_count() {
         return methods_count;
     }
 
@@ -87,7 +87,7 @@ public class Classfile {
         return methods;
     }
 
-    public ClassItem getAttributes_count() {
+    public SimpleItem getAttributes_count() {
         return attributes_count;
     }
 
@@ -96,53 +96,65 @@ public class Classfile {
     }
 
     public void magic(byte[] val) {
-        this.magic = new ClassItem(ItemType.magic);
-        this.magic.setMry(val);
+        assert(val.length == 4);
+        this.magic = new SimpleItem(ItemType.magic);
+        this.magic.load(val);
     }
 
     public void minorVer(byte[] val) {
-        this.minor_version = new ClassItem(ItemType.minor_version);
-        this.minor_version.setMry(val);
+        assert(val.length == 2);
+        this.minor_version = new SimpleItem(ItemType.minor_version);
+        this.minor_version.load(val);
     }
 
     public void majorVer(byte[] val) {
-        this.major_version = new ClassItem(ItemType.major_version);
-        this.major_version.setMry(val);
+        assert(val.length == 2);
+        this.major_version = new SimpleItem(ItemType.major_version);
+        this.major_version.load(val);
     }
 
     public void cpCount(short cpCount) {
-        this.constant_pool_count = new ClassItem(ItemType.constant_pool_count);
-        this.constant_pool_count.setMry(toU2(cpCount));
-        this.constant_pool = new ClassItem[(int) cpCount];
+        this.constant_pool_count = new SimpleItem(ItemType.constant_pool_count);
+        this.constant_pool_count.load(toU2(cpCount));
+        this.constant_pool = new CpInfo[(int) cpCount];
     }
 
     public void constantPoolItem(int idx, CpInfo cpInfo) {
         this.constant_pool[idx] = cpInfo;
     }
 
-    public void accFlags(short accFlags) {
-        this.access_flags = new ClassItem(ItemType.access_flags);
-        this.access_flags.setMry(toU2(accFlags));
+    public void accFlags(byte[] val) {
+        assert(val.length == 2);
+        this.access_flags = new SimpleItem(ItemType.access_flags);
+        this.access_flags.load(val);
     }
 
-    public void thisClass(short thisClass) {
-        this.this_class = new ClassItem(ItemType.this_class);
-        this.this_class.setMry(toU2(thisClass));
+    public void thisClass(byte[] val) {
+        assert(val.length == 2);
+        this.this_class = new SimpleItem(ItemType.this_class);
+        this.this_class.load(val);
     }
 
-    public void superClass(short superClass) {
-        this.this_class = new ClassItem(ItemType.super_class);
-        this.this_class.setMry(toU2(superClass));
+    public void superClass(byte[] val) {
+        assert(val.length == 2);
+        this.this_class = new SimpleItem(ItemType.super_class);
+        this.this_class.load(val);
     }
 
     public void interfCount(short interfCount) {
-        this.interfaces_count = new ClassItem(ItemType.interfaces_count);
-        this.interfaces_count.setMry(toU2(interfCount));
-        this.interfaces = new ClassItem[(int) interfCount];
+        this.interfaces_count = new SimpleItem(ItemType.interfaces_count);
+        this.interfaces_count.load(toU2(interfCount));
+        this.interfaces = new SimpleItem[(int) interfCount];
     }
 
     public void interfacesItem(int idx, short val) {
-        this.interfaces[idx] = new ClassItem(ItemType.interfaces);
-        this.interfaces[idx].setMry(toU2(val));
+        this.interfaces[idx] = new SimpleItem(ItemType.interfaces);
+        this.interfaces[idx].load(toU2(val));
+    }
+
+    public void fieldsCount(short fieldsCount) {
+        this.fields_count = new SimpleItem(ItemType.fields_count);
+        this.fields_count.load(toU2(fieldsCount));
+        this.fields = new FieldInfo[(int) fieldsCount];
     }
 }

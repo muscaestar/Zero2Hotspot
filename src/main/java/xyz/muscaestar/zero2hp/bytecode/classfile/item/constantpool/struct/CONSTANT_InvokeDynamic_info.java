@@ -26,4 +26,14 @@ public class CONSTANT_InvokeDynamic_info extends CpInfo {
     public CONSTANT_InvokeDynamic_info() {
         super(CpTag.CONSTANT_InvokeDynamic);
     }
+
+    @Override
+    public void load(byte[] bytes) {
+
+    }
+
+    @Override
+    public String meta() {
+        return null;
+    }
 }

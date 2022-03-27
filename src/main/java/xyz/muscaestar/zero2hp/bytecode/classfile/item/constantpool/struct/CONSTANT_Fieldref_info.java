@@ -29,8 +29,7 @@ public class CONSTANT_Fieldref_info extends CpInfo {
     }
 
     @Override
-    public void loadInfo(byte[] info) {
-        super.loadInfo(info);
+    public void load(byte[] info) {
         this.class_index = ByteUtil.fromU2(info[0], info[1]);
         this.name_and_type_index = ByteUtil.fromU2(info[2], info[3]);
     }

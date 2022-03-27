@@ -18,4 +18,14 @@ public class CONSTANT_MethodType_info extends CpInfo {
     public CONSTANT_MethodType_info() {
         super(CpTag.CONSTANT_MethodType);
     }
+
+    @Override
+    public void load(byte[] bytes) {
+
+    }
+
+    @Override
+    public String meta() {
+        return null;
+    }
 }

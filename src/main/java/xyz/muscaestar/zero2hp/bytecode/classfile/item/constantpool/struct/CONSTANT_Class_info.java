@@ -19,8 +19,7 @@ public class CONSTANT_Class_info extends CpInfo {
     }
 
     @Override
-    public void loadInfo(byte[] info) {
-        super.loadInfo(info);
+    public void load(byte[] info) {
         this.name_index = ByteUtil.fromU2(info[0], info[1]);
     }
 

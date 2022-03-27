@@ -2,7 +2,7 @@ package xyz.muscaestar.zero2hp.bytecode;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.Classfile;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.CpInfo;
-import xyz.muscaestar.zero2hp.bytecode.enums.access.AccMask;
+import xyz.muscaestar.zero2hp.bytecode.enums.access.ClassAccMask;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
 import xyz.muscaestar.zero2hp.bytecode.factory.CpInfoFactory;
 
@@ -56,26 +56,43 @@ public class ByteCodeParser {
 
         // 访问标志
         short accFlags = fromU2(bytecode[offsetAcc], bytecode[offsetAcc + 1]);
-        classfile.accFlags(accFlags);
-        final String flags = Arrays.stream(AccMask.resolve(accFlags)).map(Enum::name).collect(Collectors.joining(","));
+        classfile.accFlags(Arrays.copyOfRange(bytecode, offsetAcc, offsetAcc + 2));
+        final String flags = Arrays.stream(ClassAccMask.resolve(accFlags)).map(Enum::name).collect(Collectors.joining(","));
         Log.info("[2字节]访问标志：{}", toHexB(toU2(accFlags)));
         Log.info("\t对应标志集合：{}", flags);
 
         // 类索引
         short thisClass = fromU2(bytecode[offsetAcc + 2], bytecode[offsetAcc + 3]);
-        classfile.thisClass(thisClass);
+        classfile.thisClass(Arrays.copyOfRange(bytecode, offsetAcc + 2, offsetAcc + 4));
         Log.info("[2字节]类索引：{}", toHexB(toU2(thisClass)));
 
         // 父类索引
         short superClass = fromU2(bytecode[offsetAcc + 4], bytecode[offsetAcc + 5]);
-        classfile.superClass(superClass);
+        classfile.superClass(Arrays.copyOfRange(bytecode, offsetAcc + 4, offsetAcc + 6));
         Log.info("[2字节]父类索引：{}", toHexB(toU2(superClass)));
 
         // 接口：计数器 + 接口表[]
         short interfCount = fromU2(bytecode[offsetAcc + 6], bytecode[offsetAcc + 7]);
         classfile.interfCount(interfCount);
         Log.info("[2字节]接口计数器：{}", (int) interfCount);
-        parseInterfaces(interfCount, offsetAcc + 8);
+        final int offsetFields = parseInterfaces(interfCount, offsetAcc + 8);
+        Log.info("接口表解析结束坐标：{}", offsetFields);
+
+        // 字段：计数器 + 字段表[]
+        short fieldsCount = fromU2(bytecode[offsetFields], bytecode[offsetFields + 1]);
+        classfile.fieldsCount(fieldsCount);
+        Log.info("[2字节]字段计数器：{}", (int) fieldsCount);
+        final int offsetMethods = parseFields(fieldsCount, offsetFields + 2);
+        Log.info("字段表解析结束坐标：{}", offsetMethods);
+    }
+
+    private int parseFields(int fieldsCount, final int startOffset) {
+//        Log.info("开始解析字段表");
+//        int offset = startOffset;
+//        for (int i = 0; i < fieldsCount; i++) {
+//
+//        }
+        return -1;
     }
 
     private int parseInterfaces(int interfCount, final int startOffset) {
