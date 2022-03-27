@@ -13,8 +13,7 @@ public class CpInfo extends ClassItem {
     private byte tag; // u1 tag; from xyz.muscaestar.zero2hp.bytecode.enums.cachepool.CpTag
 
     protected CpInfo(CpTag tag) {
-        super();
-        super.setType(ItemType.constant_pool);
+        super(ItemType.constant_pool);
         this.setTag(tag.val());
         // 内存长度未确定
     }
