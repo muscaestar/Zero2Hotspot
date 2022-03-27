@@ -29,4 +29,8 @@ public class CONSTANT_Class_info extends CpInfo {
     public String meta() {
         return "[2字节]name_index: #" + toUint(name_index);
     }
+
+    public short getName_index() {
+        return name_index;
+    }
 }

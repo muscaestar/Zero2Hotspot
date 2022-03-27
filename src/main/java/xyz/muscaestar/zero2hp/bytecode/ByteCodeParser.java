@@ -1,9 +1,13 @@
 package xyz.muscaestar.zero2hp.bytecode;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.Classfile;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.AttrInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.ConstantManager;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.field.FieldInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.access.ClassAccMask;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
+import xyz.muscaestar.zero2hp.bytecode.factory.AttributeFactory;
 import xyz.muscaestar.zero2hp.bytecode.factory.CpInfoFactory;
 
 import java.io.File;
@@ -25,6 +29,7 @@ public class ByteCodeParser {
     public static final int CP_OFFSET = 10;
     private final Classfile classfile = new Classfile();
     private byte[] bytecode;
+    private ConstantManager constantManager;
 
     public void parse(File file) throws IOException {
         final FileInputStream fileInputStream = new FileInputStream(file);
@@ -54,6 +59,9 @@ public class ByteCodeParser {
         final int offsetAcc = parseConstantPool(cpCount);
         Log.info("常量池解析结束坐标: {}", offsetAcc);
 
+        // 常量池管理器
+        constantManager = new ConstantManager(classfile.getConstant_pool());
+
         // 访问标志
         short accFlags = fromU2(bytecode[offsetAcc], bytecode[offsetAcc + 1]);
         classfile.accFlags(Arrays.copyOfRange(bytecode, offsetAcc, offsetAcc + 2));
@@ -64,12 +72,12 @@ public class ByteCodeParser {
         // 类索引
         short thisClass = fromU2(bytecode[offsetAcc + 2], bytecode[offsetAcc + 3]);
         classfile.thisClass(Arrays.copyOfRange(bytecode, offsetAcc + 2, offsetAcc + 4));
-        Log.info("[2字节]类索引：{}", toHexB(toU2(thisClass)));
+        Log.info("[2字节]类索引：{}", constantManager.findAll(toUint(thisClass)));
 
         // 父类索引
         short superClass = fromU2(bytecode[offsetAcc + 4], bytecode[offsetAcc + 5]);
         classfile.superClass(Arrays.copyOfRange(bytecode, offsetAcc + 4, offsetAcc + 6));
-        Log.info("[2字节]父类索引：{}", toHexB(toU2(superClass)));
+        Log.info("[2字节]父类索引：{}", constantManager.findAll(toUint(superClass)));
 
         // 接口：计数器 + 接口表[]
         short interfCount = fromU2(bytecode[offsetAcc + 6], bytecode[offsetAcc + 7]);
@@ -86,13 +94,33 @@ public class ByteCodeParser {
         Log.info("字段表解析结束坐标：{}", offsetMethods);
     }
 
-    private int parseFields(int fieldsCount, final int startOffset) {
+    private int parseFields(short fieldsCount, final int startOffset) {
         Log.info("开始解析字段表");
         int offset = startOffset;
-        for (int i = 0; i < fieldsCount; i++) {
-
+        for (int i = 0; i < toUint(fieldsCount); i++) {
+            classfile.fieldsItem(i, Arrays.copyOfRange(bytecode, offset, offset + 8));
+            final FieldInfo fieldInfo = classfile.getFields()[i];
+            Log.info("第{}个字段：", i);
+            Log.info("\t" + fieldInfo.meta());
+            offset = parseAttributes(fieldInfo.getAttributes_count(), offset + 8, fieldInfo.getAttributes());
         }
-        return -1;
+        return offset;
+    }
+
+    private int parseAttributes(short attrCount, final int startOffset, AttrInfo[] attrInfos) {
+        Log.info("\t开始解析属性表");
+        int offset = startOffset;
+        for (int i = 0; i < toUint(attrCount); i++) {
+            final byte[] u2Name = Arrays.copyOfRange(bytecode, offset, offset + 2);
+            final byte[] u4Len = Arrays.copyOfRange(bytecode, offset + 2, offset + 6);
+            final int totalLen = 6 + fromU4(u4Len[0], u4Len[1], u4Len[2], u4Len[3]);
+            attrInfos[i] = AttributeFactory.create(""); // todo
+            attrInfos[i].load(Arrays.copyOfRange(bytecode, offset, offset + totalLen));
+            offset += totalLen;
+            Log.info("\t\t" + attrInfos[i].meta());
+        }
+        Log.info("\t属性表解析结束坐标：{}", offset);
+        return offset;
     }
 
     private int parseInterfaces(short interfCount, final int startOffset) {
@@ -101,7 +129,7 @@ public class ByteCodeParser {
         for (int i = 0; i < toUint(interfCount); i++) {
             short index = fromU2(bytecode[offset++], bytecode[offset++]);
             classfile.interfacesItem(i, index);
-            Log.info("第{}个接口：索引：{}", i, toUint(index));
+            Log.info("第{}个接口：name：#{}", i, toUint(index));
         }
         return offset;
     }
@@ -124,7 +152,7 @@ public class ByteCodeParser {
             } else {
                 assert(resolved == CpTag.CONSTANT_Utf8); // CONSTANT_Utf8 只有它的长度是动态的
                 final byte[] u2Length = Arrays.copyOfRange(bytecode, offset, offset + 2);
-                final int totalLen = 2 + fromU2(u2Length[0], u2Length[1]);
+                final int totalLen = 2 + toUint(fromU2(u2Length[0], u2Length[1]));
                 info = Arrays.copyOfRange(bytecode, offset, offset + totalLen);
                 offset += totalLen;
             }

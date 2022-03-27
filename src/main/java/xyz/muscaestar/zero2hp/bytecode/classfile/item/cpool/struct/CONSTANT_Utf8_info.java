@@ -35,4 +35,8 @@ public class CONSTANT_Utf8_info extends CpInfo {
         return "[2字节]length: " + toUint(length)
                 + "; [" + length + "字节]bytes转字符串: " + toUtf8(bytes);
     }
+
+    public String value() {
+        return toUtf8(bytes);
+    }
 }

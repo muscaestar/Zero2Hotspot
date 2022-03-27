@@ -158,4 +158,9 @@ public class Classfile {
         this.fields_count.load(toU2(fieldsCount));
         this.fields = new FieldInfo[toUint(fieldsCount)];
     }
+
+    public void fieldsItem(int idx, byte[] val) {
+        this.fields[idx] = new FieldInfo();
+        this.fields[idx].load(val);
+    }
 }
