@@ -2,6 +2,8 @@ package xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.nested.stackfra
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.nested.verification.VerifInfo;
 
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUint;
+
 /**
  * Created by muscaestar on 3/27/22
  *
@@ -12,7 +14,7 @@ public class Append_frame extends StackMapFrame {
     private VerifInfo[] locals;
 
     public Append_frame(byte frame_type) {
-        int i = Byte.toUnsignedInt(frame_type);
+        int i = toUint(frame_type);
         assert(i > 251);
         locals = new VerifInfo[i - 251];
     }

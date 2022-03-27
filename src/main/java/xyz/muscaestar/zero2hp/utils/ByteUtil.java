@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class ByteUtil {
     public static String toHex(byte b) {
-        return String.format("0x%X", Byte.toUnsignedInt(b));
+        return String.format("0x%X", ByteUtil.toUint(b));
     }
 
     /**
@@ -24,23 +24,23 @@ public class ByteUtil {
     }
 
     public static short fromU2(byte low, byte high) {
-        final int l = Byte.toUnsignedInt(low);
-        final int h = Byte.toUnsignedInt(high);
+        final int l = ByteUtil.toUint(low);
+        final int h = ByteUtil.toUint(high);
         return (short) (l << 8 | h);
     }
 
-    public static byte[] toU2(short cpCount) {
+    public static byte[] toU2(short ushort) {
         byte[] u2 =  new byte[2];
-        u2[1] = (byte) (cpCount & 0xFF);
-        u2[0] = (byte) (cpCount >>> 8 & 0xFF);
+        u2[1] = (byte) (ushort & 0xFF);
+        u2[0] = (byte) (ushort >>> 8 & 0xFF);
         return u2;
     }
 
     public static int fromU4(byte b0, byte b1, byte b2, byte b3) {
-        final int l1 = Byte.toUnsignedInt(b0);
-        final int l2 = Byte.toUnsignedInt(b1);
-        final int h1 = Byte.toUnsignedInt(b2);
-        final int h2 = Byte.toUnsignedInt(b3);
+        final int l1 = ByteUtil.toUint(b0);
+        final int l2 = ByteUtil.toUint(b1);
+        final int h1 = ByteUtil.toUint(b2);
+        final int h2 = ByteUtil.toUint(b3);
         return (l1 << 24) | (l2 << 16) | (h1 << 8) | h2;
     }
 
@@ -51,6 +51,30 @@ public class ByteUtil {
         u4[1] = (byte) (uint >>> 16 & 0xFF);
         u4[0] = (byte) (uint >>> 24 & 0xFF);
         return u4;
+    }
+
+    public static long toUlong(int fourbyte) {
+        return Integer.toUnsignedLong(fourbyte);
+    }
+
+    public static long toUlong(byte b) {
+        return Byte.toUnsignedLong(b);
+    }
+
+    public static int toUint(short twobyte) {
+        return Short.toUnsignedInt(twobyte);
+    }
+
+    public static int toUint(byte b) {
+        return Byte.toUnsignedInt(b);
+    }
+
+    public static float toFloat(int fourbyte) {
+        return Float.intBitsToFloat(fourbyte);
+    }
+
+    public static double toDouble(long eightbyte) {
+        return Double.longBitsToDouble(eightbyte);
     }
 
     public static String toUtf8(byte[] bytes) {

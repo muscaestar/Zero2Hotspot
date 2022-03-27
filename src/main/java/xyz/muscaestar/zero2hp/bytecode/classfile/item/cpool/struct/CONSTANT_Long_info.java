@@ -2,7 +2,9 @@ package xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.struct;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
-import xyz.muscaestar.zero2hp.utils.ByteUtil;
+
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.fromU4;
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUlong;
 
 /**
  * Created by muscaestar on 3/25/22
@@ -25,8 +27,8 @@ public class CONSTANT_Long_info extends CpInfo {
 
     @Override
     public void load(byte[] info) {
-        this.high_bytes = ByteUtil.fromU4(info[0], info[1], info[2], info[3]);
-        this.low_bytes = ByteUtil.fromU4(info[4], info[5], info[6], info[7]);
+        this.high_bytes = fromU4(info[0], info[1], info[2], info[3]);
+        this.low_bytes = fromU4(info[4], info[5], info[6], info[7]);
     }
 
     @Override
@@ -35,6 +37,8 @@ public class CONSTANT_Long_info extends CpInfo {
     }
 
     public long value() {
-        return (long) high_bytes << 32 | low_bytes;
+        final long high_long = toUlong(high_bytes);
+        final long low_long = toUlong(low_bytes);
+        return high_long << 32 | low_long;
     }
 }

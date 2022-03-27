@@ -2,7 +2,9 @@ package xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.struct;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
-import xyz.muscaestar.zero2hp.utils.ByteUtil;
+
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.fromU2;
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUint;
 
 /**
  * 表示方法
@@ -30,12 +32,13 @@ public class CONSTANT_Methodref_info extends CpInfo {
 
     @Override
     public void load(byte[] info) {
-        this.class_index = ByteUtil.fromU2(info[0], info[1]);
-        this.name_and_type_index = ByteUtil.fromU2(info[2], info[3]);
+        this.class_index = fromU2(info[0], info[1]);
+        this.name_and_type_index = fromU2(info[2], info[3]);
     }
 
     @Override
     public String meta() {
-        return "[2字节]class_index: #" + (int) class_index + "; [2字节]name_and_type_index: #" + (int) name_and_type_index;
+        return "[2字节]class_index: #" + toUint(class_index)
+                + "; [2字节]name_and_type_index: #" + toUint(name_and_type_index);
     }
 }

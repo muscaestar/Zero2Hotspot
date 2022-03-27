@@ -7,6 +7,7 @@ import xyz.muscaestar.zero2hp.bytecode.classfile.item.field.FieldInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;
 
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.toU2;
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUint;
 
 /**
  * Created by muscaestar on 3/25/22
@@ -116,7 +117,7 @@ public class Classfile {
     public void cpCount(short cpCount) {
         this.constant_pool_count = new SimpleItem(ItemType.constant_pool_count);
         this.constant_pool_count.load(toU2(cpCount));
-        this.constant_pool = new CpInfo[(int) cpCount];
+        this.constant_pool = new CpInfo[toUint(cpCount)];
     }
 
     public void constantPoolItem(int idx, CpInfo cpInfo) {
@@ -144,7 +145,7 @@ public class Classfile {
     public void interfCount(short interfCount) {
         this.interfaces_count = new SimpleItem(ItemType.interfaces_count);
         this.interfaces_count.load(toU2(interfCount));
-        this.interfaces = new SimpleItem[(int) interfCount];
+        this.interfaces = new SimpleItem[toUint(interfCount)];
     }
 
     public void interfacesItem(int idx, short val) {
@@ -155,6 +156,6 @@ public class Classfile {
     public void fieldsCount(short fieldsCount) {
         this.fields_count = new SimpleItem(ItemType.fields_count);
         this.fields_count.load(toU2(fieldsCount));
-        this.fields = new FieldInfo[(int) fieldsCount];
+        this.fields = new FieldInfo[toUint(fieldsCount)];
     }
 }

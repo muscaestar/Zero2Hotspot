@@ -14,8 +14,6 @@ public class SimpleItem extends ClassItem {
         assert(type.len() < 0x0A);
 
         this.type = type;
-        // 分配内存
-        mry = new byte[type.len()];
     }
 
     public byte[] getMry() {

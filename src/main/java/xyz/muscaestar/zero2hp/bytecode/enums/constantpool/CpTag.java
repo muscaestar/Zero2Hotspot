@@ -1,5 +1,7 @@
 package xyz.muscaestar.zero2hp.bytecode.enums.constantpool;
 
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUint;
+
 /**
  * Created by muscaestar on 3/20/22
  *
@@ -27,12 +29,12 @@ public enum CpTag {
 
     static {
         for (CpTag v : CpTag.values()) {
-            mapping[v.val() & 0xFF] = v;
+            mapping[toUint(v.val())] = v;
         }
     }
 
     public static CpTag resolve(byte b) {
-        return mapping[b & 0xFF];
+        return mapping[toUint(b)];
     }
 
     private final byte infoLen;

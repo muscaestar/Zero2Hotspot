@@ -45,12 +45,12 @@ public class ByteCodeParser {
         short majorVer = fromU2(bytecode[6], bytecode[7]);
         classfile.minorVer(Arrays.copyOfRange(bytecode, 4, 6));
         classfile.majorVer(Arrays.copyOfRange(bytecode, 6, 8));
-        Log.info("[2+2字节]版本号：{}.{}", (int) majorVer, (int) minorVer);
+        Log.info("[2+2字节]版本号：{}.{}", toUint(majorVer), toUint(minorVer));
 
         // 常量池: 计数器 + 常量池[]
         short cpCount = fromU2(bytecode[8], bytecode[9]);
         classfile.cpCount(cpCount);
-        Log.info("[2字节]常量池计数器：{}", (int) cpCount);
+        Log.info("[2字节]常量池计数器：{}", toUint(cpCount));
         final int offsetAcc = parseConstantPool(cpCount);
         Log.info("常量池解析结束坐标: {}", offsetAcc);
 
@@ -74,14 +74,14 @@ public class ByteCodeParser {
         // 接口：计数器 + 接口表[]
         short interfCount = fromU2(bytecode[offsetAcc + 6], bytecode[offsetAcc + 7]);
         classfile.interfCount(interfCount);
-        Log.info("[2字节]接口计数器：{}", (int) interfCount);
+        Log.info("[2字节]接口计数器：{}", toUint(interfCount));
         final int offsetFields = parseInterfaces(interfCount, offsetAcc + 8);
         Log.info("接口表解析结束坐标：{}", offsetFields);
 
         // 字段：计数器 + 字段表[]
         short fieldsCount = fromU2(bytecode[offsetFields], bytecode[offsetFields + 1]);
         classfile.fieldsCount(fieldsCount);
-        Log.info("[2字节]字段计数器：{}", (int) fieldsCount);
+        Log.info("[2字节]字段计数器：{}", toUint(fieldsCount));
         final int offsetMethods = parseFields(fieldsCount, offsetFields + 2);
         Log.info("字段表解析结束坐标：{}", offsetMethods);
     }
@@ -95,21 +95,21 @@ public class ByteCodeParser {
         return -1;
     }
 
-    private int parseInterfaces(int interfCount, final int startOffset) {
+    private int parseInterfaces(short interfCount, final int startOffset) {
         Log.info("开始解析接口表");
         int offset = startOffset;
-        for (int i = 0; i < interfCount; i++) {
+        for (int i = 0; i < toUint(interfCount); i++) {
             short index = fromU2(bytecode[offset++], bytecode[offset++]);
             classfile.interfacesItem(i, index);
-            Log.info("第{}个接口：索引：{}", i, (int) index);
+            Log.info("第{}个接口：索引：{}", i, toUint(index));
         }
         return offset;
     }
 
-    private int parseConstantPool(int cpCount) {
+    private int parseConstantPool(short cpCount) {
         Log.info("开始解析常量池");
         int offset = CP_OFFSET;
-        for (int i = 1; i < cpCount; i++) { // 常量池以 1 到 cpCount-1 为索引
+        for (int i = 1; i < toUint(cpCount); i++) { // 常量池以 1 到 cpCount-1 为索引
             // tag
             byte tag = bytecode[offset++];
             final CpTag resolved = CpTag.resolve(tag);

@@ -26,6 +26,6 @@ public class CONSTANT_Float_info extends CpInfo {
 
     @Override
     public String meta() {
-        return "[4字节]value: " + bytes;
+        return "[4字节]value: " + ByteUtil.toFloat(bytes);
     }
 }
