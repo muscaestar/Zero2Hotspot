@@ -1,6 +1,7 @@
 package xyz.muscaestar.zero2hp.bytecode.classfile;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.ClassItem;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.constantpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;
 
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.toU2;
@@ -112,7 +113,11 @@ public class Classfile {
     public void cpCount(short cpCount) {
         this.constant_pool_count = new ClassItem(ItemType.constant_pool_count);
         this.constant_pool_count.setMry(toU2(cpCount));
-        this.constant_pool = new ClassItem[cpCount];
+        this.constant_pool = new ClassItem[(int) cpCount];
+    }
+
+    public void constantPoolItem(int idx, CpInfo cpInfo) {
+        this.constant_pool[idx] = cpInfo;
     }
 
     public void accFlags(short accFlags) {
@@ -133,5 +138,11 @@ public class Classfile {
     public void interfCount(short interfCount) {
         this.interfaces_count = new ClassItem(ItemType.interfaces_count);
         this.interfaces_count.setMry(toU2(interfCount));
+        this.interfaces = new ClassItem[(int) interfCount];
+    }
+
+    public void interfacesItem(int idx, short val) {
+        this.interfaces[idx] = new ClassItem(ItemType.interfaces);
+        this.interfaces[idx].setMry(toU2(val));
     }
 }

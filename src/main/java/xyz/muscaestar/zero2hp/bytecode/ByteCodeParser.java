@@ -22,6 +22,7 @@ import static xyz.muscaestar.zero2hp.utils.LogUtil.Log;
  */
 public class ByteCodeParser {
 
+    public static final int CP_OFFSET = 10;
     private final Classfile classfile = new Classfile();
     private byte[] bytecode;
 
@@ -74,11 +75,23 @@ public class ByteCodeParser {
         short interfCount = fromU2(bytecode[offsetAcc + 6], bytecode[offsetAcc + 7]);
         classfile.interfCount(interfCount);
         Log.info("[2字节]接口计数器：{}", (int) interfCount);
+        parseInterfaces(interfCount, offsetAcc + 8);
     }
 
-    private int parseConstantPool(short cpCount) {
+    private int parseInterfaces(int interfCount, final int startOffset) {
+        Log.info("开始解析接口表");
+        int offset = startOffset;
+        for (int i = 0; i < interfCount; i++) {
+            short index = fromU2(bytecode[offset++], bytecode[offset++]);
+            classfile.interfacesItem(i, index);
+            Log.info("第{}个接口：索引：{}", i, (int) index);
+        }
+        return offset;
+    }
+
+    private int parseConstantPool(int cpCount) {
         Log.info("开始解析常量池");
-        int offset = 10;
+        int offset = CP_OFFSET;
         for (int i = 1; i < cpCount; i++) { // 常量池以 1 到 cpCount-1 为索引
             // tag
             byte tag = bytecode[offset++];
@@ -86,20 +99,20 @@ public class ByteCodeParser {
             Log.info("第{}个常量tag：{}", i, resolved.name());
 
             CpInfo cpInfo;
+            byte[] info;
             if (resolved.infoLen() < 15) {
-                final byte[] info = Arrays.copyOfRange(bytecode, offset, offset + resolved.infoLen());
+                info = Arrays.copyOfRange(bytecode, offset, offset + resolved.infoLen());
                 offset += resolved.infoLen();
-                cpInfo = CpInfoFactory.createCpInfo(resolved, info);
                 if (resolved.infoLen() == 8) i++; // Double Long 两种常量各占两个索引
             } else {
                 assert(resolved == CpTag.CONSTANT_Utf8); // CONSTANT_Utf8 只有它的长度是动态的
                 final byte[] u2Length = Arrays.copyOfRange(bytecode, offset, offset + 2);
                 final int totalLen = 2 + fromU2(u2Length[0], u2Length[1]);
-                final byte[] info = Arrays.copyOfRange(bytecode, offset, offset + totalLen);
+                info = Arrays.copyOfRange(bytecode, offset, offset + totalLen);
                 offset += totalLen;
-                cpInfo = CpInfoFactory.createCpInfo(resolved, info);
             }
-            classfile.getConstant_pool()[i] = cpInfo;
+            cpInfo = CpInfoFactory.createCpInfo(resolved, info);
+            classfile.constantPoolItem(i, cpInfo);
             Log.info("\t" + cpInfo.meta());
         }
         return offset;
