@@ -101,7 +101,7 @@ public class ByteCodeParser {
             classfile.fieldsItem(i, Arrays.copyOfRange(bytecode, offset, offset + 8));
             final FieldInfo fieldInfo = classfile.getFields()[i];
             Log.info("第{}个字段：", i);
-            Log.info("\t" + fieldInfo.meta());
+            Log.info("\t" + fieldInfo.meta(constantManager::findAll));
             offset = parseAttributes(fieldInfo.getAttributes_count(), offset + 8, fieldInfo.getAttributes());
         }
         return offset;
@@ -114,10 +114,12 @@ public class ByteCodeParser {
             final byte[] u2Name = Arrays.copyOfRange(bytecode, offset, offset + 2);
             final byte[] u4Len = Arrays.copyOfRange(bytecode, offset + 2, offset + 6);
             final int totalLen = 6 + fromU4(u4Len[0], u4Len[1], u4Len[2], u4Len[3]);
-            attrInfos[i] = AttributeFactory.create(""); // todo
-            attrInfos[i].load(Arrays.copyOfRange(bytecode, offset, offset + totalLen));
+
+            final String attrName = constantManager.findUtf8(fromU2(u2Name[0], u2Name[1]));
+            final byte[] bytes = Arrays.copyOfRange(bytecode, offset, offset + totalLen);
+            attrInfos[i] = AttributeFactory.create(attrName, bytes);
             offset += totalLen;
-            Log.info("\t\t" + attrInfos[i].meta());
+            Log.info("\t\t" + attrInfos[i].meta(constantManager::findAll));
         }
         Log.info("\t属性表解析结束坐标：{}", offset);
         return offset;
@@ -129,7 +131,7 @@ public class ByteCodeParser {
         for (int i = 0; i < toUint(interfCount); i++) {
             short index = fromU2(bytecode[offset++], bytecode[offset++]);
             classfile.interfacesItem(i, index);
-            Log.info("第{}个接口：name：#{}", i, toUint(index));
+            Log.info("第{}个接口：name：{}", i, constantManager.findAll(index));
         }
         return offset;
     }
@@ -157,7 +159,7 @@ public class ByteCodeParser {
                 offset += totalLen;
             }
             cpInfo = CpInfoFactory.createCpInfo(resolved, info);
-            classfile.constantPoolItem(i, cpInfo);
+            classfile.constantPoolItem(resolved.infoLen() != 8 ? i : i - 1, cpInfo);
             Log.info("\t" + cpInfo.meta());
         }
         return offset;

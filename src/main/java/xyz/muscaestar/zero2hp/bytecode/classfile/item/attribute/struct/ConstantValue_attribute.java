@@ -2,6 +2,8 @@ package xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.struct;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.AttrInfo;
 
+import java.util.function.Function;
+
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.*;
 
 /**
@@ -37,5 +39,12 @@ public class ConstantValue_attribute extends AttrInfo {
         return "[2字节]name: #" + toUint(super.attribute_name_index)
                 + "; [4字节]len: " + super.attribute_length
                 + "; [2字节]常量索引：#" + toUint(this.constantvalue_index);
+    }
+
+    @Override
+    public String meta(Function<Short, String> cpoolFunc) {
+        return "[2字节]name: " + cpoolFunc.apply(super.attribute_name_index)
+                + "; [4字节]len: " + super.attribute_length
+                + "; [2字节]常量索引：" + cpoolFunc.apply(this.constantvalue_index);
     }
 }

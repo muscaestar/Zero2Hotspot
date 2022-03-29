@@ -4,10 +4,11 @@ import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
 
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.fromU4;
-import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUlong;
 
 /**
  * Created by muscaestar on 3/25/22
+ *
+ * 此常量是32位有符号整型
  *
  * @author muscaestar
  */
@@ -28,6 +29,10 @@ public class CONSTANT_Integer_info extends CpInfo {
 
     @Override
     public String meta() {
-        return "[4字节]value: " + toUlong(bytes);
+        return "[4字节]value: " + bytes;
+    }
+
+    public int value() {
+        return bytes;
     }
 }

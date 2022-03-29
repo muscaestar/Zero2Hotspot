@@ -4,6 +4,8 @@ import xyz.muscaestar.zero2hp.bytecode.classfile.item.ClassItem;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.AttrInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;
 
+import java.util.function.Function;
+
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.*;
 
 /**
@@ -35,6 +37,13 @@ public class FieldInfo extends ClassItem {
         return "name：#" + toUint(this.name_index)
                 + "; 访问标志：" + toHexB(toU2(this.access_flags))
                 + "; 字段描述符：#" + toUint(this.descriptor_index)
+                + "; 属性数量：" + toUint(this.attributes_count);
+    }
+
+    public String meta(Function<Short, String> cpoolFunc) {
+        return "name：" + cpoolFunc.apply(this.name_index)
+                + "; 访问标志：" + toHexB(toU2(this.access_flags))
+                + "; 字段描述符：" + cpoolFunc.apply(this.descriptor_index)
                 + "; 属性数量：" + toUint(this.attributes_count);
     }
 

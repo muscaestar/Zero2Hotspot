@@ -9,6 +9,8 @@ import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUlong;
 /**
  * Created by muscaestar on 3/25/22
  *
+ * 64位有符号整型
+ *
  * @author muscaestar
  */
 public class CONSTANT_Long_info extends CpInfo {

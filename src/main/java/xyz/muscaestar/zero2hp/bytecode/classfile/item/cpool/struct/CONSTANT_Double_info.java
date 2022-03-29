@@ -2,12 +2,15 @@ package xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.struct;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
+import xyz.muscaestar.zero2hp.utils.ByteUtil;
 
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.fromU4;
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUlong;
 
 /**
  * Created by muscaestar on 3/25/22
+ *
+ * 64位有符号浮点数
  *
  * @author muscaestar
  */
@@ -36,9 +39,10 @@ public class CONSTANT_Double_info extends CpInfo {
         return "[8字节]value: " + value();
     }
 
-    public long value() {
+    public double value() {
         final long high_long = toUlong(high_bytes);
         final long low_long = toUlong(low_bytes);
-        return high_long << 32 | low_long;
+        long v = high_long << 32 | low_long;
+        return ByteUtil.toDouble(v);
     }
 }

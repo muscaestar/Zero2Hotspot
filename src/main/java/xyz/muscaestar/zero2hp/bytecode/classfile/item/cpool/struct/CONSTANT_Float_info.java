@@ -6,6 +6,7 @@ import xyz.muscaestar.zero2hp.utils.ByteUtil;
 
 /**
  * Created by muscaestar on 3/25/22
+ * 32位有符号浮点数
  *
  * @author muscaestar
  */
@@ -26,6 +27,10 @@ public class CONSTANT_Float_info extends CpInfo {
 
     @Override
     public String meta() {
-        return "[4字节]value: " + ByteUtil.toFloat(bytes);
+        return "[4字节]value: " + value();
+    }
+
+    public float value() {
+        return ByteUtil.toFloat(bytes);
     }
 }
