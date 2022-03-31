@@ -138,8 +138,8 @@ public class Classfile {
 
     public void superClass(byte[] val) {
         assert(val.length == 2);
-        this.this_class = new SimpleItem(ItemType.super_class);
-        this.this_class.load(val);
+        this.super_class = new SimpleItem(ItemType.super_class);
+        this.super_class.load(val);
     }
 
     public void interfCount(short interfCount) {
