@@ -5,6 +5,7 @@ import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.AttrInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.ConstantManager;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.field.FieldInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.method.MethodInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.access.ClassAccMask;
 import xyz.muscaestar.zero2hp.bytecode.enums.constantpool.CpTag;
 import xyz.muscaestar.zero2hp.bytecode.factory.AttributeFactory;
@@ -92,6 +93,26 @@ public class ByteCodeParser {
         Log.info("[2字节]字段计数器：{}", toUint(fieldsCount));
         final int offsetMethods = parseFields(fieldsCount, offsetFields + 2);
         Log.info("字段表解析结束坐标：{}", offsetMethods);
+
+        // 方法：计数器 + 方法表[]
+        short methodsCount = fromU2(bytecode[offsetMethods], bytecode[offsetMethods + 1]);
+        classfile.methodsCount(methodsCount);
+        Log.info("[2字节]方法计数器：{}", toUint(methodsCount));
+        final int offsetAttrs = parseMethods(methodsCount, offsetMethods + 2);
+        Log.info("方法表解析结束坐标：{}", offsetAttrs);
+    }
+
+    private int parseMethods(short methodsCount, final int startOffset) {
+        Log.info("开始解析方法表");
+        int offset = startOffset;
+        for (int i = 0; i < toUint(methodsCount); i++) {
+            classfile.methodsItem(i, Arrays.copyOfRange(bytecode, offset, offset + 8));
+            final MethodInfo methodInfo = classfile.getMethods()[i];
+            Log.info("第{}个方法：", i);
+            Log.info("\t" + methodInfo.meta(constantManager::findAll));
+            offset = parseAttributes(methodInfo.getAttributes_count(), offset + 8, methodInfo.getAttributes());
+        }
+        return offset;
     }
 
     private int parseFields(short fieldsCount, final int startOffset) {

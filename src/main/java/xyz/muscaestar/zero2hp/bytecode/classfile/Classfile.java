@@ -4,6 +4,7 @@ import xyz.muscaestar.zero2hp.bytecode.classfile.item.ClassItem;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.SimpleItem;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.field.FieldInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.method.MethodInfo;
 import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;
 
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.toU2;
@@ -28,7 +29,7 @@ public class Classfile {
     private SimpleItem fields_count; // 字段计数器
     private FieldInfo[] fields; // 字段表
     private SimpleItem methods_count; // 方法计数器
-    private ClassItem[] methods; // 方法表
+    private MethodInfo[] methods; // 方法表
     private SimpleItem attributes_count; // 属性计数器
     private ClassItem[] attributes; // 属性表
 
@@ -84,7 +85,7 @@ public class Classfile {
         return methods_count;
     }
 
-    public ClassItem[] getMethods() {
+    public MethodInfo[] getMethods() {
         return methods;
     }
 
@@ -162,5 +163,16 @@ public class Classfile {
     public void fieldsItem(int idx, byte[] val) {
         this.fields[idx] = new FieldInfo();
         this.fields[idx].load(val);
+    }
+
+    public void methodsCount(short methodsCount) {
+        this.methods_count = new SimpleItem(ItemType.methods_count);
+        this.methods_count.load(toU2(methodsCount));
+        this.methods = new MethodInfo[toUint(methodsCount)];
+    }
+
+    public void methodsItem(int idx, byte[] val) {
+        this.methods[idx] = new MethodInfo();
+        this.methods[idx].load(val);
     }
 }

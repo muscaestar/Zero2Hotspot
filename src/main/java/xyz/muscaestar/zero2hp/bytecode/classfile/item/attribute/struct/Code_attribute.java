@@ -1,6 +1,7 @@
 package xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.struct;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.AttrInfo;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.nested.ExceptionTable;
 
 import java.util.function.Function;
 
@@ -12,14 +13,14 @@ import java.util.function.Function;
  * @author muscaestar
  */
 public class Code_attribute extends AttrInfo {
-    private short max_stack; // u2
-    private short max_locals; // u2
+    private short max_stack; // u2 当前方法的操作数栈在任何时间点的最大深度
+    private short max_locals; // u2 当前方法的局部变量表中的局部变量个数
     private int code_length; // u4
-    private byte[] code; // u1 * code_length
+    private byte[] code; // u1 * code_length 当前方法的实际字节内容
     private short exception_table_length; // u2
-    private byte[] exception_table; // u2 * 4 * exception_table_length
+    private ExceptionTable[] exception_table; // u8 * exception_table_length
     private short attributes_count; // u2
-    private byte[] attributes; // ...
+    private AttrInfo[] attributes; // ...
 
     @Override
     public void load(byte[] bytes) {
