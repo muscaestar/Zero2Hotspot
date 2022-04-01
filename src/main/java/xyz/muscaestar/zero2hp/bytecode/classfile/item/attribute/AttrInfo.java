@@ -5,6 +5,8 @@ import xyz.muscaestar.zero2hp.bytecode.enums.classfile.ItemType;
 
 import java.util.function.Function;
 
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.*;
+
 /**
  * Created by muscaestar on 3/27/22
  *
@@ -18,6 +20,18 @@ public abstract class AttrInfo extends ClassItem {
         setType(ItemType.attributes);
     }
 
-    public abstract String meta();
-    public abstract String meta(Function<Short, String> cpoolFunc);
+    @Override
+    public void load(byte[] bytes) {
+        this.attribute_name_index = fromU2(bytes[0], bytes[1]);
+        this.attribute_length = fromU4(bytes[2], bytes[3], bytes[4], bytes[5]);
+    }
+
+    public String meta() {
+        return "[2字节]name: #" + toUint(this.attribute_name_index)
+                + "; [4字节]len: " + toUlong(this.attribute_length) + "; ";
+    }
+    public String meta(Function<Short, String> cpoolFunc) {
+        return "[2字节]name: " + cpoolFunc.apply(this.attribute_name_index)
+                + "; [4字节]len: " + toUlong(this.attribute_length) + "; ";
+    }
 }

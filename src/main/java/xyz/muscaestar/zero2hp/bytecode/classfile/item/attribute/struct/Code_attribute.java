@@ -24,6 +24,7 @@ public class Code_attribute extends AttrInfo {
 
     @Override
     public void load(byte[] bytes) {
+        super.load(bytes);
 
     }
 

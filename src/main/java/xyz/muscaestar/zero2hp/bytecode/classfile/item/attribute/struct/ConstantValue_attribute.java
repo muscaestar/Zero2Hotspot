@@ -4,7 +4,8 @@ import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.AttrInfo;
 
 import java.util.function.Function;
 
-import static xyz.muscaestar.zero2hp.utils.ByteUtil.*;
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.fromU2;
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUint;
 
 /**
  * Created by muscaestar on 3/27/22
@@ -27,24 +28,21 @@ public class ConstantValue_attribute extends AttrInfo {
 
     @Override
     public void load(byte[] bytes) {
-        final int len = fromU4(bytes[2], bytes[3], bytes[4], bytes[5]);
-        assert(len == super.attribute_length);
+        super.load(bytes);
+        assert(2 == super.attribute_length);
 
-        super.attribute_name_index = fromU2(bytes[0], bytes[1]);
         this.constantvalue_index = fromU2(bytes[6], bytes[7]);
     }
 
     @Override
     public String meta() {
-        return "[2字节]name: #" + toUint(super.attribute_name_index)
-                + "; [4字节]len: " + super.attribute_length
-                + "; [2字节]常量索引：#" + toUint(this.constantvalue_index);
+        return super.meta()
+                + "[2字节]常量索引：#" + toUint(this.constantvalue_index);
     }
 
     @Override
     public String meta(Function<Short, String> cpoolFunc) {
-        return "[2字节]name: " + cpoolFunc.apply(super.attribute_name_index)
-                + "; [4字节]len: " + super.attribute_length
-                + "; [2字节]常量索引：" + cpoolFunc.apply(this.constantvalue_index);
+        return super.meta(cpoolFunc)
+                + "[2字节]常量索引：" + cpoolFunc.apply(this.constantvalue_index);
     }
 }

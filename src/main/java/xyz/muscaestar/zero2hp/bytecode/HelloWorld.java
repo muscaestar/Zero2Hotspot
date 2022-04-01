@@ -17,7 +17,12 @@ public class HelloWorld implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void run() throws RuntimeException {
         System.out.println("Hello World");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
