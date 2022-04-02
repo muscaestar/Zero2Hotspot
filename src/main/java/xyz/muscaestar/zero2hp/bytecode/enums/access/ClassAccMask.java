@@ -70,6 +70,10 @@ public enum ClassAccMask {
         return set.toArray(new ClassAccMask[0]);
     }
 
+    public static boolean isInterf(short accFlags) {
+        return (accFlags & ACC_INTERFACE.val) == ACC_INTERFACE.val;
+    }
+
     public short val() {
         return val;
     }

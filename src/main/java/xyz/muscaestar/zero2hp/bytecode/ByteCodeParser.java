@@ -31,6 +31,7 @@ public class ByteCodeParser {
     private final Classfile classfile = new Classfile();
     private byte[] bytecode;
     private ConstantManager constantManager;
+    private boolean isInterf = false;
 
     public void parse(File file) throws IOException {
         final FileInputStream fileInputStream = new FileInputStream(file);
@@ -67,6 +68,7 @@ public class ByteCodeParser {
         short accFlags = fromU2(bytecode[offsetAcc], bytecode[offsetAcc + 1]);
         classfile.accFlags(Arrays.copyOfRange(bytecode, offsetAcc, offsetAcc + 2));
         final String flags = Arrays.stream(ClassAccMask.resolve(accFlags)).map(Enum::name).collect(Collectors.joining(","));
+        this.isInterf = ClassAccMask.isInterf(accFlags);
         Log.info("[2字节]访问标志：{}", toHexB(toU2(accFlags)));
         Log.info("\t对应标志集合：{}", flags);
 
@@ -109,7 +111,7 @@ public class ByteCodeParser {
             classfile.methodsItem(i, Arrays.copyOfRange(bytecode, offset, offset + 8));
             final MethodInfo methodInfo = classfile.getMethods()[i];
             Log.info("第{}个方法：", i);
-            Log.info("\t" + methodInfo.meta(constantManager::findAll));
+            Log.info("\t" + methodInfo.meta(constantManager::findAll, isInterf, constantManager::findUtf8));
             offset = parseAttributes(methodInfo.getAttributes_count(), offset + 8, methodInfo.getAttributes());
         }
         return offset;

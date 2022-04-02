@@ -16,6 +16,10 @@ public class HelloWorld implements Runnable {
         helloWorld.run();
     }
 
+    static {
+        System.out.println("<clinit>");
+    }
+
     @Override
     public void run() throws RuntimeException {
         System.out.println("Hello World");
