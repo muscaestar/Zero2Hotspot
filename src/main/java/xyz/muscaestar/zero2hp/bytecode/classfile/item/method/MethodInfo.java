@@ -41,7 +41,7 @@ public class MethodInfo extends ClassItem {
                 .map(Enum::name).collect(Collectors.joining(","));
         return "name：" + cpoolFunc.apply(this.name_index)
                 + "; 访问标志：" + toHexB(toU2(this.access_flags)) + "对应标志集合：" + flags
-                + "; 字段描述符：" + cpoolFunc.apply(this.descriptor_index)
+                + "; 方法描述符：" + cpoolFunc.apply(this.descriptor_index)
                 + "; 属性数量：" + toUint(this.attributes_count);
     }
 

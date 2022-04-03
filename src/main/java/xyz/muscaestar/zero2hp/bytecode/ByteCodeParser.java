@@ -1,7 +1,6 @@
 package xyz.muscaestar.zero2hp.bytecode;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.Classfile;
-import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.AttrInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.ConstantManager;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.field.FieldInfo;
@@ -64,6 +63,9 @@ public class ByteCodeParser {
         // 常量池管理器
         constantManager = new ConstantManager(classfile.getConstant_pool());
 
+        // 属性工厂
+        AttributeFactory.init(constantManager);
+
         // 访问标志
         short accFlags = fromU2(bytecode[offsetAcc], bytecode[offsetAcc + 1]);
         classfile.accFlags(Arrays.copyOfRange(bytecode, offsetAcc, offsetAcc + 2));
@@ -112,7 +114,7 @@ public class ByteCodeParser {
             final MethodInfo methodInfo = classfile.getMethods()[i];
             Log.info("第{}个方法：", i);
             Log.info("\t" + methodInfo.meta(constantManager::findAll, isInterf, constantManager::findUtf8));
-            offset = parseAttributes(methodInfo.getAttributes_count(), offset + 8, methodInfo.getAttributes());
+            offset = AttributeFactory.parseAttributes(bytecode, offset + 8, methodInfo.getAttributes());
         }
         return offset;
     }
@@ -125,26 +127,8 @@ public class ByteCodeParser {
             final FieldInfo fieldInfo = classfile.getFields()[i];
             Log.info("第{}个字段：", i);
             Log.info("\t" + fieldInfo.meta(constantManager::findAll));
-            offset = parseAttributes(fieldInfo.getAttributes_count(), offset + 8, fieldInfo.getAttributes());
+            offset = AttributeFactory.parseAttributes(bytecode, offset + 8, fieldInfo.getAttributes());
         }
-        return offset;
-    }
-
-    private int parseAttributes(short attrCount, final int startOffset, AttrInfo[] attrInfos) {
-        Log.info("\t开始解析属性表");
-        int offset = startOffset;
-        for (int i = 0; i < toUint(attrCount); i++) {
-            final byte[] u2Name = Arrays.copyOfRange(bytecode, offset, offset + 2);
-            final byte[] u4Len = Arrays.copyOfRange(bytecode, offset + 2, offset + 6);
-            final int totalLen = 6 + fromU4(u4Len[0], u4Len[1], u4Len[2], u4Len[3]);
-
-            final String attrName = constantManager.findUtf8(fromU2(u2Name[0], u2Name[1]));
-            final byte[] bytes = Arrays.copyOfRange(bytecode, offset, offset + totalLen);
-            attrInfos[i] = AttributeFactory.create(attrName, bytes);
-            offset += totalLen;
-            Log.info("\t\t" + attrInfos[i].meta(constantManager::findAll));
-        }
-        Log.info("\t属性表解析结束坐标：{}", offset);
         return offset;
     }
 
