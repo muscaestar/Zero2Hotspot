@@ -6,4 +6,8 @@ package xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.nested.stackfra
  * @author muscaestar
  */
 public class Same_frame extends StackMapFrame {
+    @Override
+    public int load(byte[] bytes, int offset) {
+        return super.load(bytes, offset);
+    }
 }

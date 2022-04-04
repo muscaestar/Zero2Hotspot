@@ -1,5 +1,8 @@
 package xyz.muscaestar.zero2hp.bytecode.enums.attrinfo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by muscaestar on 3/27/22
  *
@@ -16,6 +19,20 @@ public enum VerifType {
     ITEM_Long                       ((byte) 4, (byte) 1),
     ITEM_Double                     ((byte) 3, (byte) 1),
     ;
+
+    private static final Map<Byte, VerifType> tagMap = new HashMap<>();
+
+    static {
+        for (VerifType type : values()) {
+            tagMap.put(type.tag, type);
+        }
+    }
+
+    public static VerifType resolve(byte tag) {
+        final VerifType verifType = tagMap.get(tag);
+        assert(verifType != null);
+        return verifType;
+    }
 
     private final byte tag;
     private final byte len;

@@ -80,56 +80,9 @@ public class ByteUtil {
     public static String toUtf8(byte[] bytes) {
         return new String(bytes, StandardCharsets.UTF_8);
 
-//        int offset = 0;
-//        StringBuilder sb = new StringBuilder();
-//        while (offset < bytes.length) {
-//            // 码点的第一个byte
-//            final byte b = bytes[offset];
-//            final boolean ascii = (b & 0b1000_0000 >>> 7) == 0; // 单码点
-//            if (ascii) {
-//                sb.append(toUtf8FromOneCodePoint(b));
-//                offset++;
-//                continue;
-//            }
-//            final boolean twoCodePoint = (b | 0b0001_1111) == 0b1101_1111; // 双码点
-//            if (twoCodePoint) {
-//                sb.append(toUtf8FromTwoCodePoint(Arrays.copyOfRange(bytes, offset, offset + 2)));
-//                offset += 2;
-//                continue;
-//            }
-//            final boolean multiCodePoint = (b | 0b0000_1111) == 0b1110_1111; // 码点数 >= 3
-//            final boolean supplyChar = (b & 0b1111) == 0b1101; // 补充字符
-//            if (multiCodePoint && supplyChar) { // 六码点
-//                sb.append(toUtf8FromSixCodePoint(Arrays.copyOfRange(bytes, offset, offset + 6)));
-//                offset += 6;
-//                continue;
-//            } else if (multiCodePoint) { // 三码点
-//                sb.append(toUtf8FromThreeCodePoint(Arrays.copyOfRange(bytes, offset, offset + 3)));
-//                offset += 3;
-//                continue;
-//            } else {
-//                throw new IllegalArgumentException("Utf8编码异常");
-//            }
-//        }
-//
-//        return sb.toString();
     }
 
-//    private static char[] toUtf8FromSixCodePoint(byte[] copyOfRange) {
-//        return new char[0];
-//    }
-//
-//    private static char[] toUtf8FromThreeCodePoint(byte[] copyOfRange) {
-//        return new char[0];
-//    }
-//
-//    private static char[] toUtf8FromTwoCodePoint(byte[] copyOfRange) {
-//        Charset.forName("UTF-8")
-//        return new char[0];
-//    }
-//
-//    private static char toUtf8FromOneCodePoint(byte b) {
-//
-//        return ' ';
-//    }
+    public static int compareU1(byte a, byte b) {
+        return toUint(a) - toUint(b);
+    }
 }

@@ -1,6 +1,11 @@
 package xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.nested.stackframe;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.nested.verification.VerifInfo;
+import xyz.muscaestar.zero2hp.bytecode.enums.attrinfo.VerifType;
+import xyz.muscaestar.zero2hp.bytecode.factory.VerifTypeFactory;
+import xyz.muscaestar.zero2hp.utils.ByteUtil;
+
+import java.util.Arrays;
 
 /**
  * Created by muscaestar on 3/27/22
@@ -13,5 +18,16 @@ public class Same_locals_1_stack_item_frame_extended extends StackMapFrame {
 
     public Same_locals_1_stack_item_frame_extended() {
         stack = new VerifInfo[1];
+    }
+
+    @Override
+    public int load(byte[] bytes, int offset) {
+        int end = super.load(bytes, offset);
+        this.offset_delta = ByteUtil.fromU2(bytes[end++], bytes[end++]);
+        final VerifType verifType = VerifType.resolve(bytes[end]);
+        final int len = ByteUtil.toUint(verifType.len());
+        stack[0] = VerifTypeFactory.create(verifType, Arrays.copyOfRange(bytes, end, end + len));
+        end += len;
+        return end;
     }
 }

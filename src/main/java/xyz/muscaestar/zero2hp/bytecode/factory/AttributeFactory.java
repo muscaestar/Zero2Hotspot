@@ -48,6 +48,11 @@ public class AttributeFactory {
             localVariableTable_attribute.load(bytes);
             return localVariableTable_attribute;
         });
+        constantToFunc.put("StackMapTable", bytes -> {
+            final StackMapTable_attribute stackMapTable_attribute = new StackMapTable_attribute();
+            stackMapTable_attribute.load(bytes);
+            return stackMapTable_attribute;
+        });
     }
 
     public static void init(ConstantManager constantManager) {

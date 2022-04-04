@@ -1,6 +1,7 @@
 package xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.nested.verification;
 
 import xyz.muscaestar.zero2hp.bytecode.enums.attrinfo.VerifType;
+import xyz.muscaestar.zero2hp.utils.ByteUtil;
 
 /**
  * Created by muscaestar on 3/27/22
@@ -15,7 +16,8 @@ public class Object_variable_info extends VerifInfo {
      */
     private short cpool_index; // u2
 
-    public Object_variable_info() {
+    public Object_variable_info(byte b1, byte b2) {
         super.tag = VerifType.ITEM_Object.tag();
+        this.cpool_index = ByteUtil.fromU2(b1, b2);
     }
 }
