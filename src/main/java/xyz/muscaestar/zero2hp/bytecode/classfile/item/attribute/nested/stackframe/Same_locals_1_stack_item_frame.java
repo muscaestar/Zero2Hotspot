@@ -6,6 +6,7 @@ import xyz.muscaestar.zero2hp.bytecode.factory.VerifTypeFactory;
 import xyz.muscaestar.zero2hp.utils.ByteUtil;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
 /**
  * Created by muscaestar on 3/27/22
@@ -27,5 +28,15 @@ public class Same_locals_1_stack_item_frame extends StackMapFrame {
         stack[0] = VerifTypeFactory.create(verifType, Arrays.copyOfRange(bytes, verifOffset, verifOffset + len));
         verifOffset += len;
         return verifOffset;
+    }
+
+    @Override
+    public String meta(Function<Short, String> cpoolFunc) {
+        StringBuilder sb = new StringBuilder(super.meta(cpoolFunc));
+        sb.append("帧类型: same_locals_1_stack_item_frame; ");
+        for (VerifInfo s : stack) {
+            sb.append(s.meta(cpoolFunc));
+        }
+        return sb.toString();
     }
 }

@@ -3,6 +3,8 @@ package xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.nested.verifica
 import xyz.muscaestar.zero2hp.bytecode.enums.attrinfo.VerifType;
 import xyz.muscaestar.zero2hp.utils.ByteUtil;
 
+import java.util.function.Function;
+
 /**
  * Created by muscaestar on 3/27/22
  *
@@ -19,5 +21,10 @@ public class Uninitialized_variable_info extends VerifInfo {
     public Uninitialized_variable_info(byte b1, byte b2) {
         super.tag = VerifType.ITEM_Uninitialized.tag();
         this.offset = ByteUtil.fromU2(b1, b2);
+    }
+
+    @Override
+    public String meta(Function<Short, String> cpoolFunc) {
+        return super.meta(cpoolFunc) + "常量池项: " + cpoolFunc.apply(this.offset);
     }
 }

@@ -6,6 +6,9 @@ import xyz.muscaestar.zero2hp.bytecode.factory.VerifTypeFactory;
 import xyz.muscaestar.zero2hp.utils.ByteUtil;
 
 import java.util.Arrays;
+import java.util.function.Function;
+
+import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUint;
 
 /**
  * Created by muscaestar on 3/27/22
@@ -48,9 +51,24 @@ public class Full_frame extends StackMapFrame {
         for (int i = 0; i < stack.length; i++) {
             final VerifType verifType = VerifType.resolve(bytes[end]);
             final int len = ByteUtil.toUint(verifType.len());
-            locals[i] = VerifTypeFactory.create(verifType, Arrays.copyOfRange(bytes, end, end + len));
+            stack[i] = VerifTypeFactory.create(verifType, Arrays.copyOfRange(bytes, end, end + len));
             end += len;
         }
         return end;
+    }
+
+    @Override
+    public String meta(Function<Short, String> cpoolFunc) {
+        StringBuilder sb = new StringBuilder(super.meta(cpoolFunc));
+        sb.append("帧类型: full_frame; offset_delta: ").append(toUint(offset_delta)).append("; ");
+        sb.append("number_of_locals: ").append(toUint(number_of_locals)).append("; ");
+        for (VerifInfo local : locals) {
+            sb.append(local.meta(cpoolFunc));
+        }
+        sb.append("number_of_stack_items: ").append(toUint(number_of_stack_items)).append("; ");
+        for (VerifInfo s : stack) {
+            sb.append(s.meta(cpoolFunc));
+        }
+        return sb.toString();
     }
 }

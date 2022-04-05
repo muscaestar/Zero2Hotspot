@@ -6,6 +6,7 @@ import xyz.muscaestar.zero2hp.bytecode.factory.VerifTypeFactory;
 import xyz.muscaestar.zero2hp.utils.ByteUtil;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
 import static xyz.muscaestar.zero2hp.utils.ByteUtil.toUint;
 
@@ -38,5 +39,15 @@ public class Append_frame extends StackMapFrame {
         }
 
         return end;
+    }
+
+    @Override
+    public String meta(Function<Short, String> cpoolFunc) {
+        StringBuilder sb = new StringBuilder(super.meta(cpoolFunc));
+        sb.append("帧类型：append_frame; offset_delta: ").append(toUint(offset_delta)).append("; ");
+        for (VerifInfo local : locals) {
+            sb.append(local.meta(cpoolFunc));
+        }
+        return sb.toString();
     }
 }

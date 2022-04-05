@@ -42,6 +42,11 @@ public class StackMapTable_attribute extends AttrInfo {
 
     @Override
     public String meta(Function<Short, String> cpoolFunc) {
-        return null;
+        StringBuilder sb = new StringBuilder(super.meta(cpoolFunc));
+        sb.append("number_of_entries: ").append(toUint(this.number_of_entries)).append("; ");
+        for (StackMapFrame entry : entries) {
+            sb.append("\n\t").append(entry.meta(cpoolFunc));
+        }
+        return sb.toString();
     }
 }
