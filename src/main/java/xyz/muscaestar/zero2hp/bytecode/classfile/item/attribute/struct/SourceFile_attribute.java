@@ -1,6 +1,7 @@
 package xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.struct;
 
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.AttrInfo;
+import xyz.muscaestar.zero2hp.utils.ByteUtil;
 
 import java.util.function.Function;
 
@@ -16,6 +17,8 @@ public class SourceFile_attribute extends AttrInfo {
 
     @Override
     public void load(byte[] bytes) {
+        super.load(bytes);
+        this.sourcefile_index = ByteUtil.fromU2(bytes[6], bytes[7]);
 
     }
 
@@ -26,6 +29,6 @@ public class SourceFile_attribute extends AttrInfo {
 
     @Override
     public String meta(Function<Short, String> cpoolFunc) {
-        return null;
+        return super.meta(cpoolFunc) + "sourcefile: " + cpoolFunc.apply(sourcefile_index);
     }
 }

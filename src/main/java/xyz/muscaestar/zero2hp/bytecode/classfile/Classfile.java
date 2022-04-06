@@ -1,7 +1,7 @@
 package xyz.muscaestar.zero2hp.bytecode.classfile;
 
-import xyz.muscaestar.zero2hp.bytecode.classfile.item.ClassItem;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.SimpleItem;
+import xyz.muscaestar.zero2hp.bytecode.classfile.item.attribute.AttrInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.cpool.CpInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.field.FieldInfo;
 import xyz.muscaestar.zero2hp.bytecode.classfile.item.method.MethodInfo;
@@ -31,7 +31,7 @@ public class Classfile {
     private SimpleItem methods_count; // 方法计数器
     private MethodInfo[] methods; // 方法表
     private SimpleItem attributes_count; // 属性计数器
-    private ClassItem[] attributes; // 属性表
+    private AttrInfo[] attributes; // 属性表
 
     public SimpleItem getMagic() {
         return magic;
@@ -93,7 +93,7 @@ public class Classfile {
         return attributes_count;
     }
 
-    public ClassItem[] getAttributes() {
+    public AttrInfo[] getAttributes() {
         return attributes;
     }
 
@@ -174,5 +174,11 @@ public class Classfile {
     public void methodsItem(int idx, byte[] val) {
         this.methods[idx] = new MethodInfo();
         this.methods[idx].load(val);
+    }
+
+    public void attrsCount(short attrsCount) {
+        this.attributes_count = new SimpleItem(ItemType.attributes_count);
+        this.attributes_count.load(toU2(attrsCount));
+        this.attributes = new AttrInfo[toUint(attrsCount)];
     }
 }

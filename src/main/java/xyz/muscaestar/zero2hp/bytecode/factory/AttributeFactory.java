@@ -53,6 +53,11 @@ public class AttributeFactory {
             stackMapTable_attribute.load(bytes);
             return stackMapTable_attribute;
         });
+        constantToFunc.put("SourceFile", bytes -> {
+            final SourceFile_attribute sourceFile_attribute = new SourceFile_attribute();
+            sourceFile_attribute.load(bytes);
+            return sourceFile_attribute;
+        });
     }
 
     public static void init(ConstantManager constantManager) {

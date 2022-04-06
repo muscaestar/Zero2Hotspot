@@ -104,6 +104,20 @@ public class ByteCodeParser {
         Log.info("[2字节]方法计数器：{}", toUint(methodsCount));
         final int offsetAttrs = parseMethods(methodsCount, offsetMethods + 2);
         Log.info("方法表解析结束坐标：{}", offsetAttrs);
+
+        // 属性：计数器 + 属性表[]
+        short attrsCount = fromU2(bytecode[offsetAttrs], bytecode[offsetAttrs + 1]);
+        classfile.attrsCount(attrsCount);
+        Log.info("[2字节]属性计数器: {}", toUint(attrsCount));
+        final int offsetEnd = parseAttributes(attrsCount, offsetAttrs + 2);
+        Log.info("属性表解析结束坐标：{}", offsetEnd);
+        assert(offsetEnd == bytecode.length);
+        Log.info("class文件字节码解析结束");
+    }
+
+    private int parseAttributes(short attrsCount, int startOffset) {
+        Log.info("开始解析属性表");
+        return AttributeFactory.parseAttributes(bytecode, startOffset, classfile.getAttributes());
     }
 
     private int parseMethods(short methodsCount, final int startOffset) {
