@@ -22,7 +22,7 @@ Learn JVM from practice. An implementation of hotspot using Java and C++.
     - [ ] SourceDebugExtension
     - [ ] BootstrapMethods
     - [ ] Synthetic
-    - [ ] Deprecated
+    - [x] Deprecated
     - [ ] Signature
     - [ ] RuntimeVisibleAnnotations,RuntimeInvisibleAnnotations
     - [ ] RuntimeVisibleTypeAnnotations,RuntimeInvisibleTypeAnnotations

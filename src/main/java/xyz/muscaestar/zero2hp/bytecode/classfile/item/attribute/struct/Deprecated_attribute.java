@@ -19,7 +19,8 @@ public class Deprecated_attribute extends AttrInfo {
 
     @Override
     public void load(byte[] bytes) {
-
+        super.load(bytes);
+        assert(super.attribute_length == 0);
     }
 
     @Override
@@ -29,6 +30,6 @@ public class Deprecated_attribute extends AttrInfo {
 
     @Override
     public String meta(Function<Short, String> cpoolFunc) {
-        return null;
+        return super.meta(cpoolFunc);
     }
 }

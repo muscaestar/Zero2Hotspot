@@ -58,6 +58,11 @@ public class AttributeFactory {
             sourceFile_attribute.load(bytes);
             return sourceFile_attribute;
         });
+        constantToFunc.put("Deprecated", bytes -> {
+            final Deprecated_attribute deprecated_attribute = new Deprecated_attribute();
+            deprecated_attribute.load(bytes);
+            return deprecated_attribute;
+        });
     }
 
     public static void init(ConstantManager constantManager) {
