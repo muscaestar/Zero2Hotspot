@@ -1,5 +1,6 @@
 # Zero2Hotspot
 Learn JVM from practice. An implementation of hotspot using Java and C++.
+参照JVM虚拟机规范时间，1.8版本。
 
 ## 字节码文件解析器
 - [x] 常规信息
